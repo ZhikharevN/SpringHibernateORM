@@ -31,7 +31,7 @@ public class UserDaoImp implements UserDao {
 
    @Override
    @Transactional
-   public User usersOwners(String model, String series) {
+   public User carOwner(String model, String series) {
       TypedQuery<User> query = sessionFactory.getCurrentSession()
               .createQuery("FROM User user LEFT OUTER JOIN FETCH user.carId WHERE user.carId.model = :mod AND user.carId.series = :ser");
       query.setParameter("mod", model);
