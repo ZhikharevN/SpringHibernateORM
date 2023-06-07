@@ -1,34 +1,37 @@
 package hiber;
 
 import hiber.config.AppConfig;
+import hiber.model.Car;
 import hiber.model.User;
 import hiber.service.UserService;
+import hiber.service.UserServiceImp;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class MainApp {
-   public static void main(String[] args) throws SQLException {
-      AnnotationConfigApplicationContext context = 
-            new AnnotationConfigApplicationContext(AppConfig.class);
+   public static void main(String[] args) {
+      AnnotationConfigApplicationContext context =
+              new AnnotationConfigApplicationContext(AppConfig.class);
 
       UserService userService = context.getBean(UserService.class);
 
-      userService.add(new User("User1", "Lastname1", "user1@mail.ru"));
-      userService.add(new User("User2", "Lastname2", "user2@mail.ru"));
-      userService.add(new User("User3", "Lastname3", "user3@mail.ru"));
-      userService.add(new User("User4", "Lastname4", "user4@mail.ru"));
+      userService.add(new User("Nikita", "Zhikharev", "zhikh@mail.ru"), new Car("Toyota", "Supra"));
+      userService.add(new User("Emily", "Smith", "smith@mail.ru"), new Car("Toyota", "Corola"));
+      userService.add(new User("Daiv", "Black", "black@mail.ru"), new Car("Reno", "Logan"));
+      userService.add(new User("Elena", "James", "james@mail.ru"), new Car("Ford", "Focus"));
 
       List<User> users = userService.listUsers();
       for (User user : users) {
-         System.out.println("Id = "+user.getId());
-         System.out.println("First Name = "+user.getFirstName());
-         System.out.println("Last Name = "+user.getLastName());
-         System.out.println("Email = "+user.getEmail());
+         System.out.println("Id = " + user.getId());
+         System.out.println("First Name = " + user.getFirstName());
+         System.out.println("Last Name = " + user.getLastName());
+         System.out.println("Email = " + user.getEmail());
          System.out.println();
       }
 
+      System.out.println(userService.usersOwners("Ford", "Focus"));
       context.close();
    }
 }
