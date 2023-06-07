@@ -1,6 +1,5 @@
 package hiber.dao;
 
-import hiber.model.Car;
 import hiber.model.User;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
@@ -17,8 +16,7 @@ public class UserDaoImp implements UserDao {
    private SessionFactory sessionFactory;
 
    @Override
-   public void add(User user, Car car) {
-      user.setCarId(car);
+   public void add(User user) {
       sessionFactory.getCurrentSession().save(user);
    }
 
@@ -31,9 +29,9 @@ public class UserDaoImp implements UserDao {
 
    @Override
    @Transactional
-   public User carOwner(String model, String series) {
+   public User getCarOwner(String model, String series) {
       TypedQuery<User> query = sessionFactory.getCurrentSession()
-              .createQuery("FROM User user LEFT OUTER JOIN FETCH user.carId WHERE user.carId.model = :mod AND user.carId.series = :ser");
+              .createQuery("FROM User user WHERE user.car.model = :mod AND user.car.series = :ser");
       query.setParameter("mod", model);
       query.setParameter("ser", series);
       return query.getSingleResult();
